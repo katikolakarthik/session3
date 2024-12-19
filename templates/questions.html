@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(120deg, #4B79A1, #283E51);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #FFD700;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .timer {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: red;
+            margin-bottom: 20px;
+            position: absolute;
+            animation: blink 1s infinite alternate, moveTimer 10s infinite;
+        }
+
+        @keyframes blink {
+            0% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+
+        @keyframes moveTimer {
+            0% { top: 20px; left: 20px; }
+            25% { top: 20px; right: 20px; }
+            50% { bottom: 20px; right: 20px; }
+            75% { bottom: 20px; left: 20px; }
+            100% { top: 20px; left: 20px; }
+        }
+
+        form {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 800px;
+        }
+
+        form div {
+            margin-bottom: 15px;
+        }
+
+        .question-container {
+            margin-bottom: 15px;
+        }
+
+        .question-number {
+            background: #FFD700;
+            color: #333;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .question {
+            display: inline;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        form label {
+            display: block;
+            margin: 5px 0;
+            color: #555;
+            font-size: 16px;
+        }
+
+        button {
+            background: #4B79A1;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            display: block;
+            margin: 20px auto;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #283E51;
+        }
+    </style>
+</head>
+<body>
+    <h1>Answer All The Questions</h1>
+    <div class="timer" id="timer">Time Remaining: 5:00</div>
+    <form method="post" id="questionsForm" onsubmit="return validateForm()"> 
+        {% for question in questions %}
+            <div class="question-container">
+                <span class="question-number">{{ loop.index }}</span>
+                <span class="question">{{ question['Question'] }}</span>
+                <label><input type="radio" name="{{ question['Question'] }}" value="A">  {{ question['Option A'] }}</label>
+                <label><input type="radio" name="{{ question['Question'] }}" value="B">  {{ question['Option B'] }}</label>
+                <label><input type="radio" name="{{ question['Question'] }}" value="C">  {{ question['Option C'] }}</label>
+                <label><input type="radio" name="{{ question['Question'] }}" value="D">  {{ question['Option D'] }}</label>
+            </div>
+        {% endfor %}
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        // Timer functionality
+        let timerSeconds = 60; // 5 minutes
+        const timerElement = document.getElementById('timer');
+
+        function startTimer() {
+            const interval = setInterval(() => {
+                const minutes = Math.floor(timerSeconds / 60);
+                const seconds = timerSeconds % 60;
+                timerElement.textContent = `Time Remaining: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                timerSeconds--;
+
+                if (timerSeconds < 0) {
+                    clearInterval(interval);
+                    alert('Time is up! Submitting your responses automatically.');
+                    document.getElementById('questionsForm').submit();
+                }
+            }, 1000);
+        }
+
+        startTimer();
+
+        // Validation to ensure all questions are answered
+        function validateForm() {
+            const form = document.getElementById('questionsForm');
+            const inputs = form.querySelectorAll('input[type="radio"]');
+            const questions = {};
+
+            // Collect selected answers
+            inputs.forEach(input => {
+                if (input.checked) {
+                    questions[input.name] = true;
+                }
+            });
+
+            // Ensure every question has an answer
+            const unanswered = Array.from(form.querySelectorAll('span.question')).filter(q => !questions[q.textContent]);
+            if (unanswered.length > 0) {
+                alert('Please answer all the questions before submitting.');
+                return false;
+            }
+
+            // Show success alert
+            alert('Exam submitted successfully!');
+            return true;
+        }
+    </script>
+</body>
+</html>
