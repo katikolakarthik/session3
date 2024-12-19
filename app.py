@@ -15,13 +15,13 @@ submission_status = {}
 
 # Branch-specific configuration
 BRANCH_CONFIG = {
-    "csd": {"credentials": "csdcredentials.xlsx", "questions": "csequestions.xls"},
-    "csm": {"credentials": "csmcredentials.xlsx", "questions": "csequestions.xls"},
-    "cse": {"credentials": "csecredentials.xlsx", "questions": "csequestions.xls"},
+    "csd": {"credentials": "csdcredentials.xlsx", "questions": "csequestions.xlsx"},
+    "csm": {"credentials": "csmcredentials.xlsx", "questions": "csequestions.xlsx"},
+    "cse": {"credentials": "csecredentials.xlsx", "questions": "csequestions.xlsx"},
     "it": {"credentials": "itcredentials.xlsx", "questions": "itquestions.xlsx"},
-    "ece": {"credentials": "ececredentials.xlsx", "questions": "ecequestions.xls"},
+    "ece": {"credentials": "ececredentials.xlsx", "questions": "ecequestions.xlsx"},
     "eee": {"credentials": "eeecredentials.xlsx", "questions": "eeequestions.xlsx"},
-    "civil": {"credentials": "civilcredentials.xlsx", "questions": "civilquestions.xls"}
+    "civil": {"credentials": "civilcredentials.xlsx", "questions": "civilquestions.xlsx"}
 }
 
 # Route for login
